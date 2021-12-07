@@ -107,8 +107,9 @@ void ImageTransportImageStreamer::imageCallback(const sensor_msgs::msg::Image::C
         float_image *= (255 / max_val);
       }
       img = float_image;
-    }
-    else
+    } else if (msg->encoding.find("16") != std::string::npos) {
+      img = cv_bridge::toCvCopy(msg, "")->image;
+    } else
     {
       // Convert to OpenCV native BGR color
       img = cv_bridge::toCvCopy(msg, "bgr8")->image;
